@@ -28,7 +28,20 @@
 ## 실행방법
 
 ### 1. DB 생성
-MySQL에서 데이터베이스 생성
+- MySQL에서 데이터베이스 생성 : 테이블 생성 및 샘플 데이터는 `src/main/resources/수강신청시스템테이블생성문및샘플데이터.sql'을 참고하시면 됩니다.
+- +) 사용한 DB&계정 생성문:
+  ```sql
+  CREATE DATABASE liveklass;
+
+  CREATE USER 'liveklass_user'@'localhost'
+  IDENTIFIED BY '비밀번호입력';
+  
+  GRANT ALL PRIVILEGES
+  ON liveklass.*
+  TO 'liveklass_user'@'localhost';
+  
+  FLUSH PRIVILEGES;
+  ```
 
 ### 2. application.properties 설정
 - `src/main/resources/application.properties.example`을 참조해서 `application.properties`에 DB정보 입력
@@ -131,3 +144,17 @@ IDE에서 프로젝트 import 후 Boot Dashboard에서 서버 시작 <br>
 
 최종 요구사항 해석, 기능 구현 및 코드 수정은 직접 수행하였습니다
 
+## API 목록 및 예시 
+
+## 데이터 모델 설명 
+
+## 테스트 실행 방법
+### 1. 테스트 실행
+- `src/test/java/com/example/liveklass/EnrollmentServiceMockTest.java` 클래스 실행 (`Run AS > JUnit Test`)
+
+### 2. 테스트 항목
+- 수강 신청 성공
+- 정원 초과 실패
+- 중복 신청 실패
+- 결제 확정 성공
+- 수강 취소 성공
