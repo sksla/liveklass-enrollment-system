@@ -1,0 +1,240 @@
+USE liveklass;
+
+-- 기존 테이블 삭제
+DROP TABLE IF EXISTS ENROLLMENT;
+DROP TABLE IF EXISTS LECTURE;
+DROP TABLE IF EXISTS MEMBER;
+
+
+
+-- =========================
+-- MEMBER
+-- =========================
+CREATE TABLE MEMBER (
+
+    MEM_ID BIGINT NOT NULL AUTO_INCREMENT COMMENT '사용자 ID',
+
+    MEM_NAME VARCHAR(50) NOT NULL COMMENT '사용자 이름',
+
+    MEM_ROLE CHAR(1) NOT NULL
+    COMMENT 'C(강사) | S(학생)',
+
+    CREATED_AT DATETIME NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    COMMENT '생성일',
+
+    CONSTRAINT PK_MEMBER
+    PRIMARY KEY (MEM_ID)
+
+);
+
+
+
+-- =========================
+-- LECTURE
+-- =========================
+CREATE TABLE LECTURE (
+
+    LEC_ID BIGINT NOT NULL AUTO_INCREMENT
+    COMMENT '강의 ID',
+
+    CREATOR_ID BIGINT NOT NULL
+    COMMENT '강사 ID',
+
+    LEC_TITLE VARCHAR(100) NOT NULL
+    COMMENT '강의 제목',
+
+    DESCRIPTION TEXT NULL
+    COMMENT '강의 설명',
+
+    PRICE INT NOT NULL
+    COMMENT '가격',
+
+    CAPACITY INT NOT NULL
+    COMMENT '최대 정원',
+
+    CUR_ENROLLMENT_CNT INT NOT NULL
+    DEFAULT 0
+    COMMENT '현재 신청 인원',
+
+    LEC_STATUS VARCHAR(20) NOT NULL
+    DEFAULT 'DRAFT'
+    COMMENT 'DRAFT | OPEN | CLOSED',
+
+    START_DATE DATE NULL
+    COMMENT '수강 시작일',
+
+    END_DATE DATE NULL
+    COMMENT '수강 종료일',
+
+    CREATED_AT DATETIME NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    COMMENT '생성일',
+
+    UPDATED_AT DATETIME NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '수정일',
+
+    CONSTRAINT PK_LECTURE
+    PRIMARY KEY (LEC_ID),
+
+    CONSTRAINT FK_LECTURE_CREATOR
+    FOREIGN KEY (CREATOR_ID)
+    REFERENCES MEMBER(MEM_ID)
+
+);
+
+
+
+-- =========================
+-- ENROLLMENT
+-- =========================
+CREATE TABLE ENROLLMENT (
+
+    ENROLL_ID BIGINT NOT NULL AUTO_INCREMENT
+    COMMENT '수강 신청 ID',
+
+    LEC_ID BIGINT NOT NULL
+    COMMENT '강의 ID',
+
+    MEM_ID BIGINT NOT NULL
+    COMMENT '수강생 ID',
+
+    ENROLL_STATUS VARCHAR(20) NOT NULL
+    DEFAULT 'PENDING'
+    COMMENT 'PENDING | CONFIRMED | CANCELLED',
+
+    CONFIRMED_AT DATETIME NULL
+    COMMENT '결제 완료 시간',
+
+    CANCELLED_AT DATETIME NULL
+    COMMENT '취소 시간',
+
+    CREATED_AT DATETIME NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    COMMENT '신청 시간',
+
+    CONSTRAINT PK_ENROLLMENT
+    PRIMARY KEY (ENROLL_ID),
+
+    CONSTRAINT FK_ENROLLMENT_LECTURE
+    FOREIGN KEY (LEC_ID)
+    REFERENCES LECTURE(LEC_ID),
+
+    CONSTRAINT FK_ENROLLMENT_MEMBER
+    FOREIGN KEY (MEM_ID)
+    REFERENCES MEMBER(MEM_ID),
+
+    CONSTRAINT UK_ENROLLMENT
+    UNIQUE (LEC_ID, MEM_ID)
+
+);
+
+
+
+-- =========================
+-- 샘플 사용자 데이터
+-- =========================
+INSERT INTO MEMBER
+(MEM_NAME, MEM_ROLE)
+VALUES
+('김강사', 'C'),
+('박강사', 'C'),
+('이학생', 'S'),
+('최학생', 'S'),
+('정학생', 'S');
+
+
+
+-- =========================
+-- 샘플 강의 데이터
+-- =========================
+INSERT INTO LECTURE
+(CREATOR_ID, LEC_TITLE, DESCRIPTION, PRICE, CAPACITY, CUR_ENROLLMENT_CNT, LEC_STATUS, START_DATE, END_DATE)
+VALUES
+-- 김강사(memId=1) 강의
+(1, 'Spring Boot 입문', 'Spring Boot 기초부터 배우기', 50000, 30, 0, 'DRAFT', '2025-07-01', '2025-08-31'),
+(1, 'MyBatis 실전', 'MyBatis를 활용한 DB 연동', 70000, 20, 1, 'OPEN', '2025-07-01', '2025-08-31'),
+(1, 'Java 기초', 'Java 기초 문법 강의', 30000, 5, 4, 'OPEN', '2025-06-01', '2025-07-31'),
+(1, 'MySQL 완성', 'MySQL 기초부터 실전까지', 60000, 10, 4, 'CLOSED', '2025-05-01', '2025-06-30'),
+(1, 'React 입문', 'React 기초부터 배우기', 80000, 25, 0, 'DRAFT', '2025-08-01', '2025-09-30'),
+(1, 'Docker 실전', 'Docker와 컨테이너 기초', 90000, 15, 2, 'OPEN', '2025-07-01', '2025-08-31'),
+(1, 'Git 완성', 'Git 기초부터 협업까지', 40000, 20, 2, 'CLOSED', '2025-04-01', '2025-05-31'),
+(1, 'Linux 기초', 'Linux 명령어 및 환경 설정', 45000, 10, 3, 'OPEN', '2025-07-01', '2025-08-31'),
+(1, 'Python 입문', 'Python 기초 문법 강의', 35000, 30, 0, 'DRAFT', '2025-08-01', '2025-09-30'),
+(1, 'AWS 입문', 'AWS 클라우드 기초', 100000, 20, 5, 'OPEN', '2025-07-01', '2025-08-31'),
+(1, 'JPA 실전', 'JPA와 Hibernate 활용', 75000, 15, 2, 'CLOSED', '2025-03-01', '2025-04-30'),
+(1, 'Vue.js 기초', 'Vue.js 프레임워크 입문', 65000, 20, 5, 'OPEN', '2025-07-01', '2025-08-31'),
+-- 박강사(memId=2) 강의
+(2, 'TypeScript 입문', 'TypeScript 기초 문법', 55000, 20, 1, 'OPEN', '2025-07-01', '2025-08-31'),
+(2, 'Node.js 실전', 'Node.js 서버 개발', 85000, 15, 0, 'DRAFT', '2025-08-01', '2025-09-30'),
+(2, 'MongoDB 기초', 'NoSQL MongoDB 입문', 60000, 10, 2, 'CLOSED', '2025-04-01', '2025-05-31'),
+(2, 'Redis 실전', 'Redis 캐싱 전략', 70000, 20, 3, 'OPEN', '2025-07-01', '2025-08-31');
+
+-- =========================
+-- 샘플 수강신청 데이터
+-- =========================
+INSERT INTO ENROLLMENT
+(LEC_ID, MEM_ID, ENROLL_STATUS, CONFIRMED_AT, CANCELLED_AT)
+VALUES
+-- LEC_ID=2 (MyBatis 실전) CUR_ENROLLMENT_CNT=1
+(2, 3, 'CONFIRMED', '2025-06-01 10:00:00', NULL),
+
+-- LEC_ID=3 (Java 기초) CUR_ENROLLMENT_CNT=4, memId=3은 PENDING
+(3, 3, 'PENDING', NULL, NULL),
+(3, 1, 'CONFIRMED', '2025-06-01 10:00:00', NULL),
+(3, 2, 'CONFIRMED', '2025-06-02 10:00:00', NULL),
+(3, 4, 'CONFIRMED', '2025-06-03 10:00:00', NULL),
+(3, 5, 'CONFIRMED', '2025-06-04 10:00:00', NULL),
+
+-- LEC_ID=4 (MySQL 완성) CUR_ENROLLMENT_CNT=4, memId=3은 CANCELLED
+(4, 3, 'CANCELLED', NULL, '2025-05-10 10:00:00'),
+(4, 1, 'CONFIRMED', '2025-05-01 10:00:00', NULL),
+(4, 2, 'CONFIRMED', '2025-05-01 11:00:00', NULL),
+(4, 4, 'CONFIRMED', '2025-05-01 12:00:00', NULL),
+(4, 5, 'CONFIRMED', '2025-05-01 13:00:00', NULL),
+
+-- LEC_ID=6 (Docker 실전) CUR_ENROLLMENT_CNT=2
+(6, 3, 'CONFIRMED', '2025-06-05 11:00:00', NULL),
+(6, 4, 'CONFIRMED', '2025-06-06 11:00:00', NULL),
+
+-- LEC_ID=7 (Git 완성) CUR_ENROLLMENT_CNT=2
+(7, 4, 'CONFIRMED', '2025-04-01 10:00:00', NULL),
+(7, 5, 'CONFIRMED', '2025-04-01 11:00:00', NULL),
+
+-- LEC_ID=8 (Linux 기초) CUR_ENROLLMENT_CNT=3
+(8, 3, 'CONFIRMED', '2025-06-10 09:00:00', NULL),
+(8, 4, 'CONFIRMED', '2025-06-11 09:00:00', NULL),
+(8, 5, 'CONFIRMED', '2025-06-12 09:00:00', NULL),
+
+-- LEC_ID=10 (AWS 입문) CUR_ENROLLMENT_CNT=5
+(10, 3, 'CONFIRMED', '2025-06-15 14:00:00', NULL),
+(10, 4, 'CONFIRMED', '2025-06-16 14:00:00', NULL),
+(10, 5, 'CONFIRMED', '2025-06-17 14:00:00', NULL),
+(10, 1, 'CONFIRMED', '2025-06-18 14:00:00', NULL),
+(10, 2, 'CONFIRMED', '2025-06-19 14:00:00', NULL),
+
+-- LEC_ID=11 (JPA 실전) CUR_ENROLLMENT_CNT=2
+(11, 4, 'CONFIRMED', '2025-03-01 10:00:00', NULL),
+(11, 5, 'CONFIRMED', '2025-03-01 11:00:00', NULL),
+
+-- LEC_ID=12 (Vue.js 기초) CUR_ENROLLMENT_CNT=5
+(12, 3, 'CONFIRMED', '2025-06-20 13:00:00', NULL),
+(12, 4, 'CONFIRMED', '2025-06-21 13:00:00', NULL),
+(12, 5, 'CONFIRMED', '2025-06-22 13:00:00', NULL),
+(12, 1, 'CONFIRMED', '2025-06-23 13:00:00', NULL),
+(12, 2, 'CONFIRMED', '2025-06-24 13:00:00', NULL),
+
+-- LEC_ID=13 (TypeScript 입문) CUR_ENROLLMENT_CNT=1
+(13, 3, 'CONFIRMED', '2025-06-22 10:00:00', NULL),
+
+-- LEC_ID=15 (MongoDB 기초) CUR_ENROLLMENT_CNT=2
+(15, 4, 'CONFIRMED', '2025-04-01 10:00:00', NULL),
+(15, 5, 'CONFIRMED', '2025-04-01 11:00:00', NULL),
+
+-- LEC_ID=16 (Redis 실전) CUR_ENROLLMENT_CNT=3, memId=3은 PENDING
+(16, 3, 'PENDING', NULL, NULL),
+(16, 4, 'CONFIRMED', '2025-06-23 10:00:00', NULL),
+(16, 5, 'CONFIRMED', '2025-06-24 10:00:00', NULL),
+(16, 1, 'CONFIRMED', '2025-06-25 10:00:00', NULL);
