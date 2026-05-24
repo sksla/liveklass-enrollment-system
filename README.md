@@ -144,9 +144,10 @@ IDE에서 프로젝트 import 후 Boot Dashboard에서 서버 시작 <br>
 
 최종 요구사항 해석, 기능 구현 및 코드 수정은 직접 수행하였습니다
 
-## API 목록 및 예시 
+## API 목록 및 예시
 
 ## 데이터 모델 설명 
+<img src="src/main/resources/static/수강 신청 시스템 과제.png" height="400px;" >
 
 ## 테스트 실행 방법
 ### 1. 테스트 실행
