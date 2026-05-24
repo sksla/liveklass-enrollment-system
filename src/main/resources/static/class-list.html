@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Class List</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f5f6f8;
+        margin: 0;
+      }
+      header {
+        background: #111827;
+        color: white;
+        padding: 15px;
+      }
+      .container {
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      button {
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+      }
+
+      select {
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>📚 강의 목록</header>
+
+    <div class="container">
+      <div class="card">
+        <!-- 상태 필터 -->
+        <select>
+          <option>전체</option>
+          <option>대기</option>
+          <option>모집중</option>
+          <option>모집마감</option>
+        </select>
+
+        <table>
+          <tr>
+            <th>강의명</th>
+            <th>가격</th>
+            <th>정원</th>
+            <th>상태</th>
+            <th>기간</th>
+            <th>신청</th>
+          </tr>
+
+          <tr>
+            <td onclick="detail(1)" style="cursor: pointer">Spring Boot</td>
+            <td>100000</td>
+            <td>10 / 30</td>
+            <td>OPEN</td>
+            <td>2026-06~2026-07</td>
+            <td>
+              <button class="btn" onclick="enroll(1)">신청</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      function detail(id) {
+        location.href = "/class-detail.html?id=" + id;
+      }
+
+      function enroll(id) {
+        alert("신청: classId=" + id);
+      }
+    </script>
+  </body>
+</html>

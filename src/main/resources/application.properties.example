@@ -1,0 +1,22 @@
+spring.application.name=liveklass-enrollment-system
+
+# 서버포트번호 수정
+server.port=포트번호 입력
+
+# viewResolver 관련 세팅
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+# contextPath 별도로 지정
+server.servlet.context-path=/liveklass
+
+# db연결정보 작성 (connection pool 작업)
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/liveklass?serverTimezone=Asia/Seoul
+spring.datasource.username=여기에_유저명
+spring.datasource.password=여기에 비밀번호
+
+# mybatis 관련 설정
+mybatis.mapper-locations=mybatis/mappers/*.xml
+mybatis.type-aliases-package=com.example.liveklass.dto
+my

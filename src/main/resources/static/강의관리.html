@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>강의 관리</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+      body {
+        background-color: #f5f6f8;
+      }
+
+      .wrap {
+        width: 1200px;
+        margin: auto;
+        padding: 40px 0px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+      }
+
+      .card-area {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-size: 13px;
+      }
+
+      .draft {
+        background: gray;
+      }
+
+      .open {
+        background: #28a745;
+      }
+
+      .closed {
+        background: #dc3545;
+      }
+
+      .table tbody tr {
+        cursor: pointer;
+      }
+
+      .table td,
+      .table th {
+        vertical-align: middle;
+      }
+
+      textarea {
+        resize: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <!-- 제목 -->
+      <div class="page-title d-flex justify-content-between align-items-center">
+        <h2>강의 관리</h2>
+
+        <a href="#" class="btn btn-outline-dark"> 메인으로 </a>
+      </div>
+
+      <!-- 강의 목록 -->
+      <div class="card-area">
+        <h4>강의 목록</h4>
+        <br />
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <!-- 상태 필터 -->
+          <select class="form-control w-25" onchange="">
+            <option value="">전체 상태</option>
+            <option value="">초안</option>
+            <option value="">모집</option>
+            <option value="">모집마감</option>
+          </select>
+
+          <div>
+            <a href="#" class="btn btn-dark"> 강의 등록 </a>
+          </div>
+        </div>
+
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th width="8%">번호</th>
+              <th width="20%">강의명</th>
+              <th width="12%">가격</th>
+              <th width="12%">정원</th>
+              <th width="15%">수강기간</th>
+              <th width="11%">상태</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr onclick="">
+              <td>1</td>
+
+              <td>Spring Boot 입문</td>
+
+              <td>100,000원</td>
+
+              <td>10 / 30</td>
+
+              <td>2026-06-01 ~ 2026-07-31</td>
+
+              <td>
+                <span class="status-badge open"> 모집 중 </span>
+              </td>
+            </tr>
+
+            <tr onclick="">
+              <td>2</td>
+
+              <td>MySQL 실전</td>
+
+              <td>80,000원</td>
+
+              <td>30 / 30</td>
+
+              <td>2026-05-01 ~ 2026-06-30</td>
+
+              <td>
+                <span class="status-badge closed"> 모집마감 </span>
+              </td>
+            </tr>
+
+            <tr onclick="">
+              <td>2</td>
+
+              <td>MySQL 기초</td>
+
+              <td>80,000원</td>
+
+              <td>0 / 30</td>
+
+              <td>2026-05-01 ~ 2026-06-30</td>
+
+              <td>
+                <span class="status-badge draft"> 초안 </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+
+        <div id="pagingArea">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

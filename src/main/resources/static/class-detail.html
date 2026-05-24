@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Class Detail</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        margin: 0;
+        background: #f5f6f8;
+      }
+      header {
+        background: #111827;
+        color: white;
+        padding: 15px;
+      }
+      .container {
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      button {
+        padding: 10px;
+        background: #2563eb;
+        color: white;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>📄 강의 상세</header>
+
+    <div class="container">
+      <div class="card">
+        <h2>Spring Boot</h2>
+
+        <p>설명: Spring Boot 기본 강의</p>
+        <p>가격: 100,000</p>
+        <p>정원: 10 / 30</p>
+        <p>기간: 2026-06 ~ 2026-07</p>
+
+        <button onclick="enroll(1)">수강 신청</button>
+      </div>
+    </div>
+
+    <script>
+      function enroll(id) {
+        alert("신청 요청: " + id);
+      }
+    </script>
+  </body>
+</html>

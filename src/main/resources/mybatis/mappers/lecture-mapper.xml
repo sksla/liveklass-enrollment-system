@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lectureMapper">
+	
+	<resultMap id="lectureResult" type="lectureDto">
+		<id column="lec_id" property="lecId" />
+		<result column="creator_id" property="creatorId" />
+		<result column="mem_name" property="memName" />
+		<result column="lec_title" property="lecTitle" />
+		<result column="description" property="description" />
+		<result column="capacity" property="capacity" />
+		<result column="cur_enrollment_cnt" property="currentEnrollmentCount" />
+		<result column="price" property="price" />
+		<result column="lec_status" property="status" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		
+	</resultMap>
+
+	<resultMap id="memberResult" type="MemberDto">
+		<id column="mem_id" property="memId" />
+		<result column="mem_name" property="memName"/>
+		<result column="confirmed_at" property="confirmedAt"/>
+	</resultMap>
+	
+	<!-- 강사의 강의 목록 -->
+	<select id="filterLectureList" resultMap="lectureResult">
+		select 
+					 lec_id
+				 , creator_id
+				 , lec_title
+				 , price
+				 , capacity
+				 , CUR_ENROLLMENT_CNT
+				 , date_format(START_DATE, '%Y-%m-%d') as start_date
+				 , date_format(END_DATE, '%Y-%m-%d') as end_date
+				 , LEC_STATUS
+		  from lecture
+		  <where>
+		   creator_id = 1
+		   <if test='condition != null and condition != ""'>
+		   	and lec_status = #{condition}
+		   </if>
+		  </where>
+	</select>
+	
+	<select id="filterLectureListCount" resultType="_int">
+		select count(*)
+			from lecture
+		  <where>
+		   creator_id = 1
+		   <if test='condition != null and condition != ""'>
+            AND lec_status = #{condition}
+       </if>
+		  </where>
+	</select>
+	
+	<!-- 강의 등록 -->
+	<insert id="insertLecture">
+	insert into lecture
+	(
+	  creator_id
+	, lec_title
+	, description
+	, price
+	, capacity
+	, start_date
+	, end_date
+	)
+	values
+	(
+		#{creatorId}
+	, #{lecTitle}
+	, #{description}
+	, #{price}	
+	, #{capacity}
+	, #{startDate}
+	, #{endDate}
+	)
+	
+	</insert>
+	
+	<!-- 강의 상세조회 -->
+	<select id="selectLecture" resultMap="lectureResult">
+		select
+           lec_id
+         , creator_id
+         , lec_title
+         , description
+         , price
+         , capacity
+         , cur_enrollment_cnt
+         , lec_status
+         , start_date
+         , end_date
+         , created_at
+         , updated_at
+      from lecture
+     where lec_id = #{lecId}
+	
+	</select>
+	
+	<!-- 수강생 목록 조회 -->
+	<select id="selectEnrollmentMemberList" resultMap="memberResult">
+    select
+           m.mem_name
+         , date_format(e.confirmed_at, '%Y-%m-%d %H:%i:%S') as confirmed_at
+      from enrollment e
+      join member m
+        on e.mem_id = m.mem_id
+     where e.lec_id = #{lecId}
+       and e.enroll_status = 'CONFIRMED'
+     order by e.created_at DESC
+	</select>
+	
+	<!-- 강의 상태 변경 -->
+	<update id="updateLectureStatus">
+		update
+		       lecture
+	     set lec_status = #{status}
+	       , updated_at = now()
+	   where lec_id = #{lecId}
+	</update>
+</mapper>
