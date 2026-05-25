@@ -28,7 +28,7 @@ public class LectureDao {
 		int offset = (pi.getCurrentPage() - 1) * limit;
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return sqlSessionTemplate.selectList("lectureMapper.filterLectureList", condition);
+		return sqlSessionTemplate.selectList("lectureMapper.filterLectureList", condition, rowBounds);
 	}
 	
 	// 강의 등록
