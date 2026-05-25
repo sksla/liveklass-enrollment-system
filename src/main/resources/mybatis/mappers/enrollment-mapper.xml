@@ -86,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			join lecture l 
 			  on e.lec_id = l.lec_id
 		 where e.mem_id	= 3
+		 order by e.created_at desc
 		 limit #{offset}, #{size}
 	</select>
 	

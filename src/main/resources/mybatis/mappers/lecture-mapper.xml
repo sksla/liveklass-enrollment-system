@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	and lec_status = #{condition}
 		   </if>
 		  </where>
+		 order by created_at DESC
 	</select>
 	
 	<select id="filterLectureListCount" resultType="_int">
