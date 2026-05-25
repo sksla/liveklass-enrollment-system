@@ -19,4 +19,4 @@ spring.datasource.password=여기에 비밀번호
 # mybatis 관련 설정
 mybatis.mapper-locations=mybatis/mappers/*.xml
 mybatis.type-aliases-package=com.example.liveklass.dto
-my
+mybatis.configuration.jdbc-type-for-null=NULL
