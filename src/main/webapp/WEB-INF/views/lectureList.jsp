@@ -282,7 +282,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           });
         }
 
-        // 페이징하는 function
+        // 페이징바 화면 출력용 함수
         function drawPage(pi) {
           let functionName = "ajaxFilterLectureList";
           let paging = "";
@@ -303,7 +303,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           for (let p = pi.startPage; p <= pi.endPage; p++) {
             if (p == pi.currentPage) {
               paging +=
-                "<li class='page-item'><a class='page-link link active' onclick='" +
+                "<li class='page-item active'><a class='page-link link' onclick='" +
                 functionName +
                 "(" +
                 p +

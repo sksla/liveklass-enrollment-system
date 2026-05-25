@@ -343,7 +343,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         });
       }
 
-      // 페이징하는 function
+      // 페이징바 화면 출력용 함수
       function drawPage(pi) {
         let functionName = "ajaxSelectMyEnrollmentList";
         let paging = "";
@@ -364,7 +364,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         for (let p = pi.startPage; p <= pi.endPage; p++) {
           if (p == pi.currentPage) {
             paging +=
-              "<li class='page-item'><a class='page-link link active' onclick='" +
+              "<li class='page-item active'><a class='page-link link' onclick='" +
               functionName +
               "(" +
               p +
@@ -473,7 +473,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         $.ajax({
           url: "${contextPath}/enrollment/enroll.do",
           type: "post",
-          data: { lecId: lecId, memId: 3 }, // memId는 로그인 구현 시 세션에서
+          data: {
+            lecId: lecId,
+            memId: 3,
+          }, // memId는 로그인 구현 시 세션에서
           success: function (rep) {
             alert(rep.alertMsg);
             ajaxSelectLectureList();
@@ -496,10 +499,11 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           type: "post",
           data: {
             lecId: lecId,
-            memId: 1,
+            memId: 3,
           },
           success: function (rep) {
             alert(rep.alertMsg);
+            ajaxSelectLectureList();
             ajaxSelectMyEnrollmentList(1);
           },
           error: function () {
@@ -521,7 +525,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           type: "post",
           data: {
             lecId: lecId,
-            memId: 1,
+            memId: 3,
             enrollStatus: enrollStatus,
             confirmedAt: confirmedAt,
           },
