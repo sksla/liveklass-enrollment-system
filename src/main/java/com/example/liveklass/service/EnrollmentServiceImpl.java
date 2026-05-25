@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class EnrollmentServiceImpl implements EnrollmentService {
 
 	private final EnrollmentDao enrollmentDao;
+	private final LectureDao lectureDao;
 	
 	// 신청 가능한 강의 목록 조회
 	@Override
@@ -85,6 +86,20 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 			// 상태 변경 실패 시 인원 수 롤백
 			// @Transactional이 있으므로 예외를 던지면 자동 롤백됨
 			throw new RuntimeException("수강 상태 변경 실패");
+		}
+		
+		// 3. 정원이 꽉 찼으면 강의 상태를 Closed로 변경
+		// 3-1. 강의 상세조회
+		LectureDto lecture = lectureDao.selectLecture(enroll.getLecId());
+		
+		// 3-2. 현재 인원수랑 정원 인원수 비교
+		if(lecture.getCurrentEnrollmentCount() >= lecture.getCapacity()) {
+			// 정원이 찼다면 강의 상태도 변경
+			lecture.setStatus("CLOSED");
+			int lecStatusResult = lectureDao.updateLectureStatus(lecture);
+			
+			return confirmResult * increaseResult * lecStatusResult;
+			
 		}
 	    		
 		return confirmResult * increaseResult;
